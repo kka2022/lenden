@@ -37,9 +37,9 @@ import java.util.UUID
 
 @Composable
 fun PersonCard(
+    modifier: Modifier = Modifier,
     person: Person,
     goToDetails: () -> Unit = {},
-    modifier: Modifier = Modifier,
     deleteAccount: (Person) -> Unit = {}
 ) {
     Card(

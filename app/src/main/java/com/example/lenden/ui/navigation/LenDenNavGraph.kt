@@ -104,7 +104,11 @@ fun LenDenNavGraph(navController: NavHostController = rememberNavController()) {
                     addDialogNameText = personViewModel.addDialogName.value,
                     addDialogAmountText = personViewModel.addDialogAmount.value,
                     onAddDialogNameChange = { personViewModel.changeAddDialogName(it) },
-                    onAddDialogAmountChange = { personViewModel.changeAddDialogAmount(it) }
+                    onAddDialogAmountChange = { personViewModel.changeAddDialogAmount(it) },
+                    onAddButtonClick = {
+                        personViewModel.insertPerson(it)
+                        navController.popBackStack()
+                    }
                 )
             }
         }

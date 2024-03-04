@@ -56,9 +56,13 @@ class PersonViewModel(
         }
     }
 
-    fun insertPerson(person: Person) =
+    fun insertPerson(person: Person) {
         viewModelScope.launch { personRepository.insertPerson(person) }
+        addDialogName.value = ""
+        addDialogAmount.value = ""
+    }
 
     fun deletePerson(person: Person) =
         viewModelScope.launch { personRepository.deletePerson(person) }
 }
+

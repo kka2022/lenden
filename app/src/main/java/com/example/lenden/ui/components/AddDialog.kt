@@ -7,6 +7,8 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.text.KeyboardOptions
+import androidx.compose.material3.Button
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
@@ -15,14 +17,19 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.text.input.KeyboardType
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.example.lenden.model.Person
 
+@Preview(showBackground = true)
 @Composable
 fun AddDialog(
-    addDialogNameText: String,
-    addDialogAmountText: String,
-    onAddDialogNameChange: (String) -> Unit,
-    onAddDialogAmountChange: (String) -> Unit
+    addDialogNameText: String = "",
+    addDialogAmountText: String = "",
+    onAddDialogNameChange: (String) -> Unit = {},
+    onAddDialogAmountChange: (String) -> Unit = {},
+    onAddButtonClick: (Person) -> Unit = {}
 ) {
     Column(
         verticalArrangement = Arrangement.Center,
@@ -42,6 +49,21 @@ fun AddDialog(
         OutlinedTextField(
             value = addDialogAmountText,
             onValueChange = { onAddDialogAmountChange(it) },
-            label = { Text(text = "Amount") })
+            label = { Text(text = "Amount") },
+            keyboardOptions = KeyboardOptions(
+                keyboardType = KeyboardType.Number
+            )
+        )
+        Spacer(modifier = Modifier.size(8.dp))
+        Button(onClick = {
+            if (addDialogNameText.isNotEmpty() && addDialogAmountText.isNotEmpty()) {
+                val amount = addDialogAmountText.toDoubleOrNull()
+                if (amount != null) {
+                    onAddButtonClick(Person(name = addDialogNameText, amount = amount))
+                }
+            }
+        }) {
+            Text(text = "Add")
+        }
     }
 }
