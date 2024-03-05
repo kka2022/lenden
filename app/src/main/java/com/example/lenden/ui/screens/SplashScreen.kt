@@ -47,7 +47,7 @@ fun SplashScreen(navController: NavHostController) {
     )
     Box(
         contentAlignment = Alignment.Center,
-        modifier = Modifier.fillMaxSize().background(color = MaterialTheme.colorScheme.inversePrimary)
+        modifier = Modifier.fillMaxSize().background(color = MaterialTheme.colorScheme.primary)
     ) {
         Image(
             painter = painterResource(id = R.drawable.money_image),

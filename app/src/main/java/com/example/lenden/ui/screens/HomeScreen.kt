@@ -14,7 +14,7 @@ import com.example.lenden.ui.components.PersonCard
 
 @Composable
 fun HomeScreen(
-    goToDetails: () -> Unit,
+    goToDetails: (String) -> Unit,
     personsList: List<Person> = DefaultDataSource.personsList,
     deleteAccount: (Person) -> Unit = {}
 ) {

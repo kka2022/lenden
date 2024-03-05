@@ -39,13 +39,13 @@ import java.util.UUID
 fun PersonCard(
     modifier: Modifier = Modifier,
     person: Person,
-    goToDetails: () -> Unit = {},
+    goToDetails: (String) -> Unit = {},
     deleteAccount: (Person) -> Unit = {}
 ) {
     Card(
         modifier = modifier
             .clickable {
-                goToDetails()
+                goToDetails(person.id)
             }
             .fillMaxWidth()
             .height(60.dp)

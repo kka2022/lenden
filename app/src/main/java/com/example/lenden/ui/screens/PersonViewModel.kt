@@ -12,9 +12,12 @@ import com.example.lenden.LenDenApplication
 import com.example.lenden.data.PersonRepository
 import com.example.lenden.model.Person
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.distinctUntilChanged
+import kotlinx.coroutines.flow.filterNotNull
+import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.launch
 
 class PersonViewModel(
@@ -22,6 +25,9 @@ class PersonViewModel(
 ) : ViewModel() {
     private val _personsList = MutableStateFlow<List<Person>>(emptyList())
     val personsList = _personsList.asStateFlow()
+
+    private val _singlePerson = MutableStateFlow<Person>(Person(name = "None", amount = 0.0))
+    val singlePerson = _singlePerson.asStateFlow()
 
     val addDialogName = mutableStateOf("")
     val addDialogAmount = mutableStateOf("")
@@ -57,12 +63,29 @@ class PersonViewModel(
     }
 
     fun insertPerson(person: Person) {
-        viewModelScope.launch { personRepository.insertPerson(person) }
+        viewModelScope.launch(Dispatchers.IO) { personRepository.insertPerson(person) }
         addDialogName.value = ""
         addDialogAmount.value = ""
     }
 
+    fun findPersonById(id: String) {
+        viewModelScope.launch {
+            getPersonById(id).collect {
+                _singlePerson.value = it
+            }
+        }
+    }
+
+    private fun getPersonById(id: String): Flow<Person> = flow<Person> {
+        personRepository.getPersonById(id)
+            .distinctUntilChanged()
+            .filterNotNull()
+            .collect {
+                emit(it)
+            }
+    }
+
     fun deletePerson(person: Person) =
-        viewModelScope.launch { personRepository.deletePerson(person) }
+        viewModelScope.launch(Dispatchers.IO) { personRepository.deletePerson(person) }
 }
 
